@@ -1,16 +1,12 @@
 from __future__ import annotations
 
+import importlib
 import importlib.util
 import socket
-"""Shared fixtures for isolated MentorX route and unit tests."""
-
-import importlib
 import sys
 import types
 from pathlib import Path
 
-import pytest
-import pymysql
 import pytest
 import redis
 import requests
@@ -31,13 +27,9 @@ if importlib.util.find_spec("pymysql") is None:
     pymysql_stub.connect = _forbid_mysql_connection
     sys.modules["pymysql"] = pymysql_stub
 
+import pymysql
 
-@pytest.fixture(autouse=True)
-def forbid_real_network(monkeypatch: pytest.MonkeyPatch):
-    def _blocked_connect(self, address):
-        raise AssertionError(f"network access is forbidden in unit tests: {address!r}")
 
-    monkeypatch.setattr(socket.socket, "connect", _blocked_connect)
 TEST_STUDENT_ID = 1001
 
 
@@ -46,7 +38,6 @@ def _unconfigured_ai_call(*args, **kwargs):
 
 
 def _install_import_stubs():
-    """Prevent model, FAISS and external PPT initialization during collection."""
     ai_model = types.ModuleType("ai_model")
     for name in (
         "ai_aichat",
@@ -69,8 +60,6 @@ _install_import_stubs()
 
 
 class AuthHeaders(dict):
-    """A header mapping that can also create headers for another identity."""
-
     def __init__(self, app, identity):
         self._app = app
         super().__init__(self._for_identity(identity))
@@ -86,11 +75,10 @@ class AuthHeaders(dict):
 
 @pytest.fixture(autouse=True)
 def forbid_external_services(monkeypatch):
-    """Fail immediately if a test reaches HTTP, MySQL or Redis accidentally."""
-
     def denied(*args, **kwargs):
         raise AssertionError("测试禁止访问公网、真实 MySQL 或真实 Redis")
 
+    monkeypatch.setattr(socket.socket, "connect", denied)
     monkeypatch.setattr(requests.sessions.Session, "request", denied)
     monkeypatch.setattr(pymysql, "connect", denied)
     monkeypatch.setattr(redis.Redis, "execute_command", denied)
