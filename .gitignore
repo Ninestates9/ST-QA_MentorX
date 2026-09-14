@@ -1,0 +1,59 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Test, coverage and type-check caches
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.tox/
+
+# Build and package artifacts
+build/
+dist/
+*.egg-info/
+
+# IDE/editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Recoverable backup of an accidentally nested Git repository
+.git.disabled/
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Downloaded models and reproducible generated assets
+local_models/
+multi_doc_vector_db/
+images/
+
+# Runtime uploads and generated presentations
+ocr_img/*
+!ocr_img/.gitkeep
+aiPPT/*
+!aiPPT/.gitkeep
+
+# Local scratch file
+temp.cpp
