@@ -17,7 +17,6 @@ class _Response:
             ]
         )
 
-
 def test_post_sse_01(monkeypatch):
     response = _Response()
     post = MagicMock(return_value=response)
@@ -32,3 +31,6 @@ def test_post_sse_01(monkeypatch):
     assert items == [{"value": 1}, {"value": 2}]
     assert post.call_args.kwargs["stream"] is True
     assert post.call_args.kwargs["verify"] is False
+
+"""TC-052：Mock HTTP 响应下的 SSE 解析测试（待实施）。"""
+
