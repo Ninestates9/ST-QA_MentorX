@@ -1,27 +1,43 @@
 """Reusable in-memory test doubles for database, Redis and HTTP tests."""
 
+from collections import deque
+
 
 class FakeCursor:
-    def __init__(self, *, fetchone_results=None, fetchall_results=None, execute_errors=None):
-        self.fetchone_results = list(fetchone_results or [])
-        self.fetchall_results = list(fetchall_results or [])
-        self.execute_errors = dict(execute_errors or {})
-        self.execute_calls = []
+    def __init__(
+        self,
+        fetchone_results=(),
+        execute_effects=(),
+        *,
+        fetchall_results=(),
+        execute_errors=None,
+    ):
+        self._fetchone_results = deque(fetchone_results)
+        self._fetchall_results = deque(fetchall_results)
+        self._execute_effects = deque(execute_effects)
+        self._execute_errors = dict(execute_errors or {})
+        self.executions = []
+        self.execute_calls = self.executions
         self.closed = False
 
     def execute(self, sql, params=None):
-        call_index = len(self.execute_calls)
-        self.execute_calls.append((sql, params))
-        error = self.execute_errors.get(call_index)
-        if error is not None:
-            raise error
+        call_index = len(self.executions)
+        self.executions.append((sql, params))
+        if call_index in self._execute_errors:
+            raise self._execute_errors[call_index]
+        if self._execute_effects:
+            effect = self._execute_effects.popleft()
+            if isinstance(effect, BaseException):
+                raise effect
         return 1
 
     def fetchone(self):
-        return self.fetchone_results.pop(0) if self.fetchone_results else None
+        if not self._fetchone_results:
+            raise AssertionError("No configured fetchone result remains")
+        return self._fetchone_results.popleft()
 
     def fetchall(self):
-        return self.fetchall_results.pop(0) if self.fetchall_results else []
+        return self._fetchall_results.popleft() if self._fetchall_results else []
 
     def close(self):
         self.closed = True
