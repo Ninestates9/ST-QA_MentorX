@@ -186,3 +186,19 @@ def test_increase_count_01(monkeypatch):
     assert "`generate_tasks` = `generate_tasks` + 1" in cursor.executions[0][0]
     assert cursor.closed is True
     assert connection.closed is True
+
+
+def test_update_info_db_01(monkeypatch):
+    connection, cursor, _ = _replace_database(
+        monkeypatch, fetchone_results=[("S",)]
+    )
+    password_hash = Mock(return_value="hashed-new-password")
+    monkeypatch.setattr(database_utils, "generate_password_hash", password_hash)
+
+    result = database_utils.update_info_db(42, "new-password", None, None)
+
+    assert result is True
+    password_hash.assert_called_once_with("new-password")
+    assert cursor.executions[1][1] == ("hashed-new-password", 42)
+    assert cursor.closed is True
+    assert connection.closed is True

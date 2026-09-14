@@ -86,3 +86,18 @@ def test_tc008_update_info_uses_jwt_identity(client, auth_headers, monkeypatch):
     assert response.get_json() == {"ret": 0, "msg": "用户42信息修改成功！"}
     update.assert_called_once_with(42, "new-pw", "新名字", "女")
 
+
+def test_updateInfo_01(client, auth_headers, monkeypatch):
+    update_info = Mock(return_value=True)
+    monkeypatch.setattr(main, "update_info_db", update_info)
+
+    response = client.post(
+        "/api/updateInfo",
+        data={"id": "99", "name": "新名字"},
+        headers=auth_headers(42),
+    )
+
+    assert response.status_code == 200
+    assert response.get_json() == {"ret": 0, "msg": "用户42信息修改成功！"}
+    update_info.assert_called_once_with(42, None, "新名字", None)
+
