@@ -22,7 +22,7 @@ def get_answer(content):
         'content-type': "application/json"
     }
     body = {
-        "model": "spark-x2.5-4b",
+        "model": "spark-x2.5-1.7b",
         "user": "user_id",
         "messages": [
             {
