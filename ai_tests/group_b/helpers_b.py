@@ -152,8 +152,7 @@ def normalize_score(raw_score: Any) -> str | None:
 
     if not isinstance(raw_score, str):
         return None
-    normalized = raw_score.strip()
-    return normalized if re.fullmatch(r"[012]", normalized) else None
+    return raw_score if re.fullmatch(r"[012]", raw_score) else None
 
 
 def assert_prompt_contract(run: GradeRun, student_answer: str) -> None:

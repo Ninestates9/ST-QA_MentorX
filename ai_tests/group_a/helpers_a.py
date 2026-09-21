@@ -34,26 +34,40 @@ def append_jsonl(path: Path, record: dict) -> None:
 
 def load_snapshot(name: str) -> dict:
     path = Path(__file__).resolve().parent / "data" / name
-    return json.loads(path.read_text(encoding="utf-8"))
+    data = json.loads(path.read_text(encoding="utf-8"))
+    source = data["source"]
+    source_path = Path(__file__).resolve().parents[2] / source["source_file"]
+    actual_hash = hashlib.sha256(source_path.read_bytes()).hexdigest()
+    if actual_hash != source["file_sha256"].lower():
+        raise ValueError(f"{source['source_file']} 已变化，请重新审核并更新甲组快照 {name}")
+    if sha256_text(data["test_context"]) != data["fragment_sha256"].lower():
+        raise ValueError(f"甲组测试片段已变化，请重新审核快照 {name}")
+    return data
 
 
 def evaluate_layers_core(answer: str) -> dict:
     text = answer.lower()
-    layers_pos = text.find("layers api")
-    core_pos = text.find("core api")
     layer_words = ("使用层", "通过层", "按层", "分层", "层构建", "层搭建")
     core_words = ("低级运算", "底层运算", "低层运算", "张量运算", "tf.matmul", "tf.add")
-    has_layer_meaning = any(word in text for word in layer_words)
-    has_core_meaning = any(word in text for word in core_words)
-    reversed_candidate = bool(
-        re.search(r"layers api.{0,35}(低级|底层|张量运算)", text, re.S)
-        or re.search(r"core api.{0,35}(按层|使用层|通过层|分层|层构建|层搭建)", text, re.S)
-    )
+    mentions = list(re.finditer(r"\b(layers|core)\s+api\b", text))
+    meanings = {"layers": [], "core": []}
+    reversed_candidate = False
+    for index, mention in enumerate(mentions):
+        end = mentions[index + 1].start() if index + 1 < len(mentions) else len(text)
+        description = re.split(r"[。；;！？!?]", text[mention.end():end], maxsplit=1)[0]
+        name = mention.group(1)
+        expected_words, opposite_words = (
+            (layer_words, core_words) if name == "layers" else (core_words, layer_words)
+        )
+        expected = any(word in description for word in expected_words)
+        opposite = any(word in description for word in opposite_words)
+        meanings[name].append(expected)
+        reversed_candidate |= opposite and not expected
     points = {
-        "layers_api": layers_pos >= 0,
-        "core_api": core_pos >= 0,
-        "layers_means_layers": has_layer_meaning,
-        "core_means_low_level_ops": has_core_meaning,
+        "layers_api": bool(meanings["layers"]),
+        "core_api": bool(meanings["core"]),
+        "layers_means_layers": any(meanings["layers"]),
+        "core_means_low_level_ops": any(meanings["core"]),
     }
     return {
         "points": points,
