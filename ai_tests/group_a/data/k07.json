@@ -1,0 +1,12 @@
+{
+  "case_data_id": "K07",
+  "source": {
+    "source_file": "knowledge/cp07.docx",
+    "file_sha256": "9b454b19b3773df9c096aa7e0c2a18b8ad8426c11341160dac1c945676a74ca5",
+    "paragraph_range": "P38-P43",
+    "review_status": "计划已审核；DOCX 实际提取文本存在乱码"
+  },
+  "raw_extracted_text": "P38: 7.1.2 TensorFlow.js �ĺ��ĸ���\nP39: TensorFlow.js ���������ṩ�ͼ��Ļ���ѧϰ����ģ�飬�������ṩ�߼������� Keras �� API �����������硣\nP40: �� TensorFlow.js �п���ͨ�����ַ�ʽ��������ѧϰģ�ͣ�\nP41: ʹ�� Layers API��ʹ�ò㹹��ģ�ͣ�\nP42: ʹ�� Core API�������ͼ����㣬���� tf.matMul()��tf.add() �ȣ�",
+  "test_context": "TensorFlow.js 可以通过两种方式创建机器学习模型：使用 Layers API（使用层构建模型）；使用 Core API（借助低级运算，例如 tf.matMul()、tf.add() 等）。",
+  "fragment_sha256": "f83a703ba0f4e2b4fc3102197eadbf88bba1ff01f446f24f5566c2641c1d7b9a"
+}

@@ -1,0 +1,12 @@
+{
+  "case_data_id": "Q09-material",
+  "source": {
+    "source_file": "knowledge/cp09.docx",
+    "file_sha256": "335902df607d245f3846bf783c0b36c7065cd1d6055e9a1358b9edb1655089a3",
+    "paragraph_range": "P474-P484",
+    "review_status": "计划已审核；不包含参考答案；DOCX 中文注释提取存在乱码"
+  },
+  "raw_extracted_text": "import RPi.GPIO as GPIO\nimport time\nGPIO.setmode(__________)\nGPIO.setup(21, GPIO.__________)\nfor i in range(5):\n    GPIO.output(21, GPIO.HIGH)\n    time.sleep(0.5)\n    __________",
+  "test_context": "树莓派 LED 控制练习材料（不含参考答案）：\nimport RPi.GPIO as GPIO\nimport time\nGPIO.setmode(__________)  # 设置 BCM 引脚编号模式\nGPIO.setup(21, GPIO.__________)  # 设置 GPIO21 为输出模式\nfor i in range(5):\n    GPIO.output(21, GPIO.HIGH)\n    time.sleep(0.5)\n    __________  # 熄灭 LED",
+  "fragment_sha256": "e65e230f62b733a93ab319e22462608852f4fcff86077a384eb11ad38c76702b"
+}

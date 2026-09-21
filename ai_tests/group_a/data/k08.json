@@ -1,0 +1,12 @@
+{
+  "case_data_id": "K08",
+  "source": {
+    "source_file": "knowledge/cp08.docx",
+    "file_sha256": "c21cddf305c7c4a30c282996161b52a4a4e736b4c865a1aa72ab08726fc7c391",
+    "paragraph_range": "P81-P89",
+    "review_status": "计划已审核；DOCX 实际提取文本存在乱码"
+  },
+  "raw_extracted_text": "P81-P89 提取为乱码；关键段落仍可辨识 TFLite 四步标题位置。",
+  "test_context": "使用 TFLite 解释执行器通常需要完成四个步骤，并按以下顺序进行：1. 加载模型；2. 转换数据；3. 运行模型推理；4. 解释输出。",
+  "fragment_sha256": "86d949afff8e21d513790d57b37f423d679a9921f6975d3898c8d311d356746b"
+}
