@@ -1,0 +1,20 @@
+{
+  "source_file": "knowledge/cp09.docx",
+  "paragraph_range": "P473-P486",
+  "source_sha256": "335902DF607D245F3846BF783C0B36C7065CD1D6055E9A1358B9EDB1655089A3",
+  "excerpt": "请补全树莓派 LED 控制代码中的三个空：GPIO.setmode(____)、GPIO.setup(21, GPIO.____)，以及使 LED 熄灭的语句 ____。",
+  "excerpt_sha256": "08195778F412054C31D2B9002110F094DE32F92FC27BC8F8F8B13D44DBEC64C9",
+  "question": "请补全树莓派 LED 控制代码中的三个空：GPIO.setmode(____)、GPIO.setup(21, GPIO.____)，以及使 LED 熄灭的语句 ____。",
+  "reference_answer": "按空位顺序为 GPIO.BCM、OUT、GPIO.output(21, GPIO.LOW)。评分规则：三个空全部正确为 0，三个空全部错误为 1，只答对部分空为 2。",
+  "scoring_rule_source": "教师制定的测试评分量表，不属于 DOCX 原文",
+  "scoring_rule": {
+    "0": "三个空全部正确",
+    "1": "三个空全部错误",
+    "2": "三个空中只有部分正确"
+  },
+  "student_answers": {
+    "A0": "GPIO.BCM; OUT; GPIO.output(21, GPIO.LOW)",
+    "A1": "GPIO.BOARD; IN; GPIO.output(21, GPIO.HIGH)",
+    "A2": "GPIO.BCM; IN; GPIO.output(21, GPIO.HIGH)"
+  }
+}
