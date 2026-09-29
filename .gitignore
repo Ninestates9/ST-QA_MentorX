@@ -62,3 +62,9 @@ md/
 
 # Real AI test run evidence (contains prompts/responses, never credentials)
 ai_tests/*/artifacts/
+
+*.pptx
+
+*.zip
+
+*.mp4
